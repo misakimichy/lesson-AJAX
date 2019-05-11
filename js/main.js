@@ -23,7 +23,7 @@ btn.addEventListener("click", () => {
     ourRequest.open('GET', 'https://raw.githubusercontent.com/misakimichy/json-example/master/animals-' + buttonCounter + '.json' );
     
     // Set what should happens once the data is loaded
-    ourRequest.onload = function() {
+    ourRequest.onload = () => {
         
         /* 
         Check if those two lines show the first item of JSON data we received via AJAX
@@ -34,11 +34,21 @@ btn.addEventListener("click", () => {
         You cannot access the  each item because JSON data response data as text.
         */
 
-        // Tell browser to interpret the JSON data into JavaScript data
-        const ourData = JSON.parse(ourRequest.responseText);
+        // look for potential error - server error, data didn't come properly
+        if (ourRequest.status >= 200 && ourRequest.status < 400) {
+            // Tell browser to interpret the JSON data into JavaScript data
+            const ourData = JSON.parse(ourRequest.responseText);
 
-        // Pass ourData so the function can work with the data
-        renderHTML(ourData);
+            // Pass ourData so the function can work with the data
+            renderHTML(ourData);
+        } else {
+            console.log("We connected to the server, but it returned an error.")
+        }
+    };
+
+    // Error handling
+    ourRequest.onerror = () => {
+        console.log("Connection error!");
     };
 
     // Send the request!
@@ -50,6 +60,7 @@ btn.addEventListener("click", () => {
         btn.classList.add("hide-me");
     }
 });
+
 
 // Add text to the empty div #animal-info
 function renderHTML(data) {
@@ -67,7 +78,6 @@ function renderHTML(data) {
             } else {
                 htmlString += ` and ${data[i].food.likes[j]}`;
             }
-
         }
 
         htmlString += ' and dislikes ';
@@ -81,10 +91,7 @@ function renderHTML(data) {
             }
         }
          
-        htmlString += `.</p>`;
-        
+        htmlString += `.</p>`;  
     }
-
     animalContainer.insertAdjacentHTML('beforeend', htmlString);
 };
-
