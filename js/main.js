@@ -11,7 +11,7 @@
     3rd click => the button disappears and receive 2 more lies of data from animals-3.json && button disappears
 */
 
-//Count how many times the button gets clicked
+// Count how many times the button gets clicked
 let buttonCounter = 1;
 const animalContainer = document.getElementById('animal-info');
 
@@ -31,10 +31,10 @@ btn.addEventListener("click", () => {
         const ourData = ourRequest.responseText;
         console.log(ourData[0]);
         
-        You cannot access the  each item because JSON data response data as text.
+        You cannot access the each item because JSON data response as text.
         */
 
-        // look for potential error - server error, data didn't come properly
+        // Look for potential error - server error, data didn't come properly
         if (ourRequest.status >= 200 && ourRequest.status < 400) {
             // Tell browser to interpret the JSON data into JavaScript data
             const ourData = JSON.parse(ourRequest.responseText);
@@ -67,11 +67,11 @@ function renderHTML(data) {
     // Use let because you gonna update the empty string to add elements 
     let htmlString = "";
 
-    // loop through pet object
+    // Loop through pet object
     for (let i = 0; i < data.length; i++) {
         htmlString += `<p> ${data[i].name} is a ${data[i].species} that likes to eat `
         
-        // loop the food they like
+        // Loop the food they like inside the pet object
         for (let j = 0; j < data[i].food.likes.length; j++) {
             if (j == 0) {
                 htmlString += data[i].food.likes[j];
